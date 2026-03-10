@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theaters — BookMyShow</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@900&display=swap');
+
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap');
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --red: #FF2D55;
+      --red-glow: rgba(255, 45, 85, 0.25);
+      --dark: #0B0B14;
+      --dark2: #111121;
+      --card: #16162A;
+      --card2: #1E1E35;
+      --line: rgba(255, 255, 255, 0.07);
+      --line2: rgba(255, 255, 255, 0.13);
+      --txt: #EEEEF8;
+      --txt2: #9191B8;
+      --txt3: #4A4A72;
+      --gold: #FFBA00;
+      --teal: #00D4AA;
+      --blue: #4C8BFF;
+      --sans: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+      --serif: 'Fraunces', 'Georgia', serif
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--dark);
+      color: var(--txt);
+      min-height: 100vh
+    }
+
+    ::-webkit-scrollbar {
+      width: 3px
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--red)
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 900;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      background: rgba(11, 11, 20, 0.95);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--line)
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--txt);
+      text-decoration: none
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--red);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--red);
+      animation: pulse 2s infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .5;
+        transform: scale(.8)
+      }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2px
+    }
+
+    .nav-link {
+      padding: 8px 14px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--txt2);
+      transition: .15s;
+      cursor: pointer;
+      text-decoration: none
+    }
+
+    .nav-link:hover,
+    .nav-link.on {
+      color: var(--txt);
+      background: var(--card2)
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 10px
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      transition: all .18s;
+      text-decoration: none;
+      white-space: nowrap
+    }
+
+    .btn-red {
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 4px 20px var(--red-glow)
+    }
+
+    .btn-red:hover {
+      background: #e02248;
+      transform: translateY(-2px)
+    }
+
+    .btn-ghost {
+      background: var(--card2);
+      color: var(--txt);
+      border: 1px solid var(--line2)
+    }
+
+    .btn-ghost:hover {
+      background: var(--card)
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 13px;
+      border-radius: 9px
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      background: var(--card2);
+      color: var(--txt2);
+      border: 1px solid var(--line)
+    }
+
+    .sk {
+      background: linear-gradient(90deg, var(--card) 0%, var(--card2) 50%, var(--card) 100%);
+      background-size: 200%;
+      animation: sk 1.5s infinite;
+      border-radius: 10px
+    }
+
+    @keyframes sk {
+      0% {
+        background-position: -200% 0
+      }
+
+      100% {
+        background-position: 200% 0
+      }
+    }
+
+    .toast-wrap {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .toast {
+      background: var(--card);
+      border: 1px solid var(--line2);
+      border-radius: 14px;
+      padding: 13px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--txt);
+      min-width: 240px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .6);
+      animation: tIn .3s ease
+    }
+
+    .toast.ok {
+      border-left: 3px solid var(--teal)
+    }
+
+    .toast.err {
+      border-left: 3px solid var(--red)
+    }
+
+    @keyframes tIn {
+      from {
+        transform: translateX(60px);
+        opacity: 0
+      }
+
+      to {
+        transform: none;
+        opacity: 1
+      }
+    }
+
+    @keyframes tOut {
+      to {
+        transform: translateX(60px);
+        opacity: 0
+      }
+    }
+
+    .page-hero {
+      padding: 100px 32px 44px;
+      background: var(--dark2);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 50% 100% at 50% 0%, rgba(76, 139, 255, .08) 0%, transparent 70%)
+    }
+
+    .page-hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1
+    }
+
+    .page-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 900;
+      margin-bottom: 8px
+    }
+
+    .page-hero p {
+      color: var(--txt2);
+      font-size: 15px
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px
+    }
+
+    .cities-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 28px 0 0
+    }
+
+    .city-tab {
+      padding: 9px 20px;
+      border-radius: 50px;
+      border: 1.5px solid var(--line2);
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--txt2);
+      cursor: pointer;
+      transition: .15s
+    }
+
+    .city-tab:hover {
+      color: var(--txt);
+      border-color: var(--txt2)
+    }
+
+    .city-tab.on {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+      box-shadow: 0 4px 14px var(--red-glow)
+    }
+
+    .theater-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      padding: 28px 0 60px
+    }
+
+    .tc {
+      background: var(--dark2);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      transition: .18s;
+      cursor: default
+    }
+
+    .tc:hover {
+      border-color: var(--line2);
+      transform: translateY(-3px)
+    }
+
+    .tc-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 10px
+    }
+
+    .tc-icon {
+      font-size: 28px
+    }
+
+    .tc-name {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 3px
+    }
+
+    .tc-city {
+      font-size: 13px;
+      color: var(--txt2)
+    }
+
+    .tc-addr {
+      font-size: 13px;
+      color: var(--txt3);
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line)
+    }
+
+    .tc-screens {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--txt2);
+      margin-top: 10px
+    }
+
+    .empty {
+      text-align: center;
+      padding: 72px;
+      color: var(--txt2);
+      grid-column: 1/-1
+    }
+
+    .empty-icon {
+      font-size: 52px;
+      margin-bottom: 16px
+    }
+
+    .empty-t {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--txt);
+      margin-bottom: 8px
+    }
+
+    @media(max-width:900px) {
+      .theater-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .wrap {
+        padding: 0 20px
+      }
+
+      .page-hero {
+        padding: 88px 20px 36px
+      }
+
+      .nav-links {
+        display: none
+      }
+
+      .btn {
+        min-height: 44px
+      }
+    }
+
+    @media(max-width:560px) {
+      .nav {
+        padding: 0 16px;
+        height: 58px
+      }
+
+      .theater-grid {
+        grid-template-columns: 1fr;
+        gap: 12px
+      }
+
+      .page-hero {
+        padding: 80px 16px 28px
+      }
+
+      .page-hero h1 {
+        font-size: 32px
+      }
+
+      .wrap {
+        padding: 0 16px
+      }
+
+      .cities-tabs {
+        gap: 6px;
+        padding: 20px 0 0
+      }
+
+      .city-tab {
+        padding: 7px 14px;
+        font-size: 13px
+      }
+
+      .tc {
+        padding: 16px
+      }
+
+      .tc-name {
+        font-size: 16px
+      }
+
+      .btn {
+        font-size: 13px;
+        min-height: 44px
+      }
+
+      @media (hover: none) and (pointer: coarse) {
+        .tc:hover {
+          transform: none
+        }
+      }
+    }
+
+    /* ══ BOOKMYSHOW BRAND ══ */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
+    }
+
+    .brand-mark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #FF1A1A;
+      clip-path: polygon(0 15%, 50% 0, 100% 15%, 100% 85%, 50% 100%, 0 85%);
+      animation: bPulse 3s ease-in-out infinite
+    }
+
+    @keyframes bPulse {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.08)
+      }
+    }
+
+    .brand-f {
+      position: relative;
+      font-family: 'Unbounded', 'Impact', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      color: #fff
+    }
+
+    .brand-name {
+      font-family: 'Unbounded', 'Impact', sans-serif;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: #F0F0FF
+    }
+
+    .brand-name em {
+      color: #FF1A1A;
+      font-style: normal
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">
+        <div class="brand-f">B</div>
+      </div>
+      <div class="brand-name">BOOK<em>MY</em>SHOW</div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="movies.html">Movies</a>
+      <a class="nav-link on" href="theaters.html">Theaters</a>
+      <a class="nav-link" href="bookings.html">My Bookings</a>
+      <a class="nav-link" href="admin.html">Admin</a>
+    </div>
+    <div class="nav-right">
+      <a href="bookings.html" class="btn btn-red btn-sm">My Tickets</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <h1>Find Theaters</h1>
+      <p>Browse cinemas near you and check available shows.</p>
+      <div class="cities-tabs" id="cityTabs"></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="theater-grid" id="theaterGrid">
+      ${Array(6).fill(`<div
+        style="background:var(--dark2);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px">
+        <div class="sk" style="height:24px;width:55%"></div>
+        <div class="sk" style="height:14px;width:35%"></div>
+        <div class="sk" style="height:12px"></div>
+        <div class="sk" style="height:12px;width:70%"></div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+    const BASE = 'http://localhost:8080';
+    let allTheaters = [], activeCity = 'all';
+
+    async function api(m, p) { try { const r = await fetch(BASE + p, { method: m }); const t = await r.text(); let d; try { d = JSON.parse(t) } catch { d = t } return { ok: r.ok, data: d } } catch { return { ok: false, data: {} } } }
+    function toast(msg, type = 'info') { const el = document.createElement('div'); el.className = 'toast ' + type; el.innerHTML = `<span>${{ ok: '✅', err: '❌', info: 'ℹ️' }[type]}</span><span>${msg}</span>`; document.getElementById('toastWrap').appendChild(el); setTimeout(() => { el.style.animation = 'tOut .3s ease forwards'; setTimeout(() => el.remove(), 300) }, 3200) }
+
+    function card(t) {
+      const icons = ['🎭', '🏛️', '🎬', '🎪', '🎦', '🌟']; const icon = icons[t.id % icons.length];
+      return `<div class="tc">
+    <div class="tc-head"><div><div class="tc-name">${t.name || 'Theater'}</div><div class="tc-city">📍 ${t.city || 'City'}</div></div><div class="tc-icon">${icon}</div></div>
+    ${t.address ? `<div class="tc-addr">${t.address}</div>` : ''}
+    <div class="tc-screens">🖥️ <span>${t.totalScreen || 1} screen${t.totalScreen !== 1 ? 's' : ''}</span></div>
+    <button class="btn btn-ghost" style="width:100%;margin-top:12px;font-size:13px" onclick="location.href='movies.html'">See Shows</button>
+  </div>`
+    }
+
+    function render(list) {
+      if (!list.length) { document.getElementById('theaterGrid').innerHTML = `<div class="empty"><div class="empty-icon">🏛️</div><div class="empty-t">No Theaters Found</div><div>Add theaters from the <a href="admin.html" style="color:var(--blue)">Admin panel</a>.</div></div>`; return }
+      document.getElementById('theaterGrid').innerHTML = list.map(card).join('')
+    }
+
+    async function init() {
+      const r = await api('GET', '/api/theater/list');
+      if (r.ok && Array.isArray(r.data)) {
+        allTheaters = r.data;
+        const cities = ['all', ...new Set(r.data.map(t => t.city).filter(Boolean))];
+        const tabs = document.getElementById('cityTabs');
+        tabs.innerHTML = cities.map(c => `<div class="city-tab${c === 'all' ? ' on' : ''}" onclick="filterCity('${c}',this)">${c === 'all' ? 'All Cities' : c}</div>`).join('');
+        render(allTheaters);
+      } else { document.getElementById('theaterGrid').innerHTML = `<div class="empty"><div class="empty-icon">🔌</div><div class="empty-t">Backend Not Connected</div><div style="margin-bottom:20px">Start Spring Boot at <strong style="color:var(--blue)">localhost:8080</strong></div><button class="btn btn-red" onclick="init()">↻ Retry</button></div>` }
+    }
+
+    function filterCity(city, el) {
+      activeCity = city;
+      document.querySelectorAll('.city-tab').forEach(t => t.classList.remove('on'));
+      el.classList.add('on');
+      render(city === 'all' ? allTheaters : allTheaters.filter(t => t.city === city));
+    }
+    init();
+  </script>
+</body>
+
+</html>
